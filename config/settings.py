@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Aplicações do projeto
-    'solicitacao',
+    'movimentacao',
 ]
 
 
