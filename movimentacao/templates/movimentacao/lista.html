@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimentações</title>
+</head>
+<body>
+
+    <h1>Movimentações</h1>
+
+    {% if movimentacoes %}
+
+        {% for movimentacao in movimentacoes %}
+
+            <article>
+                <h2>{{ movimentacao.get_equipamento_display }}</h2>
+
+                <p>
+                    <strong>Código:</strong>
+                    {{ movimentacao.codigo }}
+                </p>
+
+                <p>
+                    <strong>Origem:</strong>
+                    {{ movimentacao.origem }}
+                </p>
+
+                <p>
+                    <strong>Destino:</strong>
+                    {{ movimentacao.destino }}
+                </p>
+
+                <p>
+                    <strong>Uso:</strong>
+                    {{ movimentacao.uso|default:"Não informado" }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ movimentacao.get_status_display }}
+                </p>
+
+                <p>
+                    <strong>Criado por:</strong>
+                    {{ movimentacao.usuario }}
+                </p>
+
+                <p>
+                    <strong>Data:</strong>
+                    {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
+                </p>
+            </article>
+
+            <hr>
+
+            <a href="{% url 'detalhe_movimentacao' movimentacao.id %}">
+                 Ver detalhes
+            </a>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Nenhuma movimentação cadastrada.</p>
+
+    {% endif %}
+
+</body>
+</html>

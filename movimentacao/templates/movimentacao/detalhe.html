@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da movimentação</title>
+</head>
+<body>
+
+    <h1>Detalhes da movimentação</h1>
+
+    <p>
+        <strong>Equipamento:</strong>
+        {{ movimentacao.get_equipamento_display }}
+    </p>
+
+    <p>
+        <strong>Código:</strong>
+        {{ movimentacao.codigo }}
+    </p>
+
+    <p>
+        <strong>Origem:</strong>
+        {{ movimentacao.origem }}
+    </p>
+
+    <p>
+        <strong>Destino:</strong>
+        {{ movimentacao.destino }}
+    </p>
+
+    <p>
+        <strong>Uso:</strong>
+        {{ movimentacao.uso|default:"Não informado" }}
+    </p>
+
+    <p>
+        <strong>Observação:</strong>
+        {{ movimentacao.observacao|default:"Não informado" }}
+    </p>
+
+    <p>
+        <strong>Criado por:</strong>
+        {{ movimentacao.usuario }}
+    </p>
+
+    <p>
+        <strong>Data de criação:</strong>
+        {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        {{ movimentacao.get_status_display }}
+    </p>
+
+    {% if movimentacao.foto %}
+        <p>
+            <strong>Foto:</strong>
+        </p>
+
+        <img
+            src="{{ movimentacao.foto.url }}"
+            alt="Foto do equipamento"
+            style="max-width: 400px;"
+        >
+    {% endif %}
+
+    <p>
+        <a href="{% url 'lista_movimentacoes' %}">
+            Voltar para movimentações
+        </a>
+    </p>
+
+</body>
+</html>
