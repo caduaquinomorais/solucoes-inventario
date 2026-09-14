@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova movimentação</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .erro {
+            color: #b00020;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Nova movimentação</h1>
+
+    <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+
+                {% if field.errors %}
+                    <div class="erro">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="acoes">
+            <button type="submit">Registrar movimentação</button>
+
+            <a href="{% url 'lista_movimentacoes' %}">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+
+</body>
+</html>

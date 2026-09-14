@@ -9,6 +9,10 @@
 
     <h1>Movimentações</h1>
 
+    <a href="{% url 'criar_movimentacao' %}">
+        Nova movimentação
+    </a>
+
     {% if movimentacoes %}
 
         {% for movimentacao in movimentacoes %}
