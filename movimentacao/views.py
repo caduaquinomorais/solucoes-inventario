@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404,redirect,render
 from .models import Movimentacao
 from .forms import MovimentacaoForm
 
+@login_required
 def lista_movimentacoes(request):
     movimentacoes = Movimentacao.objects.all().order_by('-data_criacao')
 
@@ -11,6 +13,7 @@ def lista_movimentacoes(request):
         {'movimentacoes': movimentacoes}
     )
 
+@login_required
 def detalhe_movimentacao(request, id):
     movimentacao = get_object_or_404(Movimentacao,id=id)
 
@@ -20,6 +23,7 @@ def detalhe_movimentacao(request, id):
         {'movimentacao':movimentacao}
     )
 
+@login_required
 def criar_movimentacao(request):
     if request.method == 'POST':
         form = MovimentacaoForm(request.POST, request.FILES)

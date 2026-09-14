@@ -140,3 +140,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # ============================================================
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOGIN_URL = '/conta/login/'
+LOGIN_REDIRECT_URL = '/movimentacoes/'
+LOGOUT_REDIRECT_URL = '/conta/login/'
