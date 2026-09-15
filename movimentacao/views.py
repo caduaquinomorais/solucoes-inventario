@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404,redirect,render
 from .models import Movimentacao
 from .forms import MovimentacaoForm
+from .decorators import administrador_required
 
 @login_required
 def lista_movimentacoes(request):
@@ -17,10 +18,14 @@ def lista_movimentacoes(request):
 def detalhe_movimentacao(request, id):
     movimentacao = get_object_or_404(Movimentacao,id=id)
 
+    administrador = request.user.groups.filter(
+        name = 'Administradores'
+    ).exists()
+
     return render(
         request,
         'movimentacao/detalhe.html',
-        {'movimentacao':movimentacao}
+        {'movimentacao':movimentacao, 'administrador': administrador,}
     )
 
 @login_required
@@ -45,4 +50,41 @@ def criar_movimentacao(request):
         request,
         'movimentacao/formulario.html',
         {'form': form}
+    )
+
+@login_required
+@administrador_required
+def editar_movimentacao(request, id):
+    movimentacao = get_object_or_404(
+        Movimentacao,
+        id=id
+    )
+
+    if request.method == 'POST':
+        form = MovimentacaoForm(
+            request.POST,
+            request.FILES,
+            instance = movimentacao
+        )
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(
+                'detalhe_movimentacao',
+                id=movimentacao.id
+            )
+
+    else:
+        form = MovimentacaoForm(
+            instance=movimentacao
+        )
+
+    return render(
+        request,
+        'movimentacao/formulario.html',
+        {
+            'form': form,
+            'modo_edicao': True
+        }
     )

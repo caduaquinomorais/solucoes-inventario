@@ -74,6 +74,12 @@
         >
     {% endif %}
 
+    {% if administrador %}
+        <a href="{% url 'editar_movimentacao' id=movimentacao.id %}">
+            Editar
+        </a>
+    {% endif %}
+
     <p>
         <a href="{% url 'lista_movimentacoes' %}">
             Voltar para movimentações

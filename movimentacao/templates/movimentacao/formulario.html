@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova movimentação</title>
+    {% if modo_edicao %}
+        <h1>Editar movimentação</h1>
+    {% else %}
+        <h1>Nova movimentação</h1>
+    {% endif %}
 
     <style>
         body {
