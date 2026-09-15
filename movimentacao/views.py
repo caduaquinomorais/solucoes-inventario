@@ -4,6 +4,7 @@ from .models import Movimentacao
 from .forms import MovimentacaoForm
 from .decorators import administrador_required
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 @login_required
 def lista_movimentacoes(request):
@@ -39,6 +40,11 @@ def criar_movimentacao(request):
             movimentacao.usuario = request.user
             movimentacao.save()
 
+            messages.success(
+                request,
+                'Movimentação criada com sucesso!'
+            )
+
             return redirect(
                 'detalhe_movimentacao',
                 id=movimentacao.id
@@ -71,6 +77,11 @@ def editar_movimentacao(request, id):
         if form.is_valid():
             form.save()
 
+            messages.success(
+                request,
+                'Movimentação atualizada com sucesso!'
+            )
+
             return redirect(
                 'detalhe_movimentacao',
                 id=movimentacao.id
@@ -101,6 +112,11 @@ def excluir_movimentacao(request, id):
 
     movimentacao.delete()
 
+    messages.success(
+        request,
+        'Movimentação atualizada com sucesso!'
+    )
+
     return redirect('lista_movimentacoes')
 
 
@@ -118,6 +134,11 @@ def alterar_status(request, id):
     if novo_status in ['pendente', 'processado', 'descartado']:
         movimentacao.status = novo_status
         movimentacao.save(update_fields=['status'])
+
+        messages.success(
+            request,
+            'Movimentação atualizada com sucesso!'
+        )
 
     return redirect(
         'detalhe_movimentacao',

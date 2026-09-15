@@ -1,82 +1,154 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimentações</title>
-</head>
-<body>
-    <div>
-        <span>Usuário: {{ request.user.username }}</span>
+{% extends 'base.html' %}
 
-        <form method="post" action="{% url 'logout' %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit">Sair</button>
-        </form>
+{% block title %}
+    Movimentações
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1 class="page-title mb-1">
+            Movimentações
+        </h1>
+
+        <p class="text-muted mb-0">
+            Controle dos equipamentos movimentados.
+        </p>
     </div>
 
-    <h1>Movimentações</h1>
-
-    <a href="{% url 'criar_movimentacao' %}">
-        Nova movimentação
+    <a
+        href="{% url 'criar_movimentacao' %}"
+        class="btn btn-primary"
+    >
+        + Nova movimentação
     </a>
 
-    {% if movimentacoes %}
+</div>
 
-        {% for movimentacao in movimentacoes %}
 
-            <article>
-                <h2>{{ movimentacao.get_equipamento_display }}</h2>
+{% if movimentacoes %}
 
-                <p>
-                    <strong>Código:</strong>
-                    {{ movimentacao.codigo }}
-                </p>
+<div class="card">
 
-                <p>
-                    <strong>Origem:</strong>
-                    {{ movimentacao.origem }}
-                </p>
+    <div class="card-header py-3">
+        Lista de movimentações
+    </div>
 
-                <p>
-                    <strong>Destino:</strong>
-                    {{ movimentacao.destino }}
-                </p>
+    <div class="table-responsive">
 
-                <p>
-                    <strong>Uso:</strong>
-                    {{ movimentacao.uso|default:"Não informado" }}
-                </p>
+        <table class="table table-hover align-middle">
 
-                <p>
-                    <strong>Status:</strong>
-                    {{ movimentacao.get_status_display }}
-                </p>
+            <thead>
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Código</th>
+                    <th>Origem</th>
+                    <th>Destino</th>
+                    <th>Usuário</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
 
-                <p>
-                    <strong>Criado por:</strong>
-                    {{ movimentacao.usuario }}
-                </p>
+            <tbody>
 
-                <p>
-                    <strong>Data:</strong>
-                    {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
-                </p>
-            </article>
+                {% for movimentacao in movimentacoes %}
 
-            <hr>
+                <tr>
 
-            <a href="{% url 'detalhe_movimentacao' movimentacao.id %}">
-                 Ver detalhes
-            </a>
+                    <td>
+                        {{ movimentacao.get_equipamento_display }}
+                    </td>
 
-        {% endfor %}
+                    <td>
+                        <strong>{{ movimentacao.codigo }}</strong>
+                    </td>
 
-    {% else %}
+                    <td>
+                        {{ movimentacao.origem }}
+                    </td>
 
-        <p>Nenhuma movimentação cadastrada.</p>
+                    <td>
+                        {{ movimentacao.destino }}
+                    </td>
 
-    {% endif %}
+                    <td>
+                        {{ movimentacao.usuario.username }}
+                    </td>
 
-</body>
-</html>
+                    <td>
+                        {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
+                    </td>
+
+                    <td>
+
+                        {% if movimentacao.status == 'pendente' %}
+                            <span class="badge text-bg-warning status-badge">
+                                Pendente
+                            </span>
+
+                        {% elif movimentacao.status == 'processado' %}
+                            <span class="badge text-bg-success status-badge">
+                                Processado
+                            </span>
+
+                        {% elif movimentacao.status == 'descartado' %}
+                            <span class="badge text-bg-danger status-badge">
+                                Descartado
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-end">
+
+                        <a
+                            href="{% url 'detalhe_movimentacao' id=movimentacao.id %}"
+                            class="btn btn-sm btn-outline-primary"
+                        >
+                            Ver
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="card text-center p-5">
+
+    <h4>
+        Nenhuma movimentação encontrada
+    </h4>
+
+    <p class="text-muted">
+        Ainda não existem movimentações cadastradas.
+    </p>
+
+    <div>
+        <a
+            href="{% url 'criar_movimentacao' %}"
+            class="btn btn-primary"
+        >
+            Criar primeira movimentação
+        </a>
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

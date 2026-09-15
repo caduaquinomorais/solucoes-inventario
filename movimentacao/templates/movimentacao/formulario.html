@@ -1,101 +1,138 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block title %}
+
     {% if modo_edicao %}
-        <h1>Editar movimentação</h1>
+        Editar movimentação
     {% else %}
-        <h1>Nova movimentação</h1>
+        Nova movimentação
     {% endif %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+{% endblock %}
 
-        h1 {
-            margin-bottom: 30px;
-        }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+{% block content %}
 
-        label {
-            font-weight: bold;
-        }
+<div class="row justify-content-center">
 
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            box-sizing: border-box;
-        }
+    <div class="col-lg-8">
 
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+        <div class="mb-4">
 
-        button {
-            padding: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+            {% if modo_edicao %}
 
-        .acoes {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
+                <h1 class="page-title mb-1">
+                    Editar movimentação
+                </h1>
 
-        .erro {
-            color: #b00020;
-            font-size: 14px;
-        }
-    </style>
-</head>
+                <p class="text-muted">
+                    Altere as informações da movimentação.
+                </p>
 
-<body>
+            {% else %}
 
-    <h1>Nova movimentação</h1>
+                <h1 class="page-title mb-1">
+                    Nova movimentação
+                </h1>
 
-    <form method="post" enctype="multipart/form-data">
+                <p class="text-muted">
+                    Registre a movimentação de um equipamento.
+                </p>
 
-        {% csrf_token %}
+            {% endif %}
 
-        {{ form.non_field_errors }}
-
-        {% for field in form %}
-            <div>
-                {{ field.label_tag }}
-                {{ field }}
-
-                {% if field.errors %}
-                    <div class="erro">
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-
-        <div class="acoes">
-            <button type="submit">Registrar movimentação</button>
-
-            <a href="{% url 'lista_movimentacoes' %}">
-                Cancelar
-            </a>
         </div>
 
-    </form>
 
-</body>
-</html>
+        <div class="card">
+
+            <div class="card-body p-4">
+
+                <form
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+
+                    {% csrf_token %}
+
+
+                    {{ form.non_field_errors }}
+
+
+                    {% for field in form %}
+
+                        <div class="mb-3">
+
+                            <label
+                                for="{{ field.id_for_label }}"
+                                class="form-label"
+                            >
+                                {{ field.label }}
+                            </label>
+
+
+                            {{ field }}
+
+
+                            {% if field.help_text %}
+
+                                <div class="form-text">
+                                    {{ field.help_text }}
+                                </div>
+
+                            {% endif %}
+
+
+                            {% if field.errors %}
+
+                                <div class="text-danger small mt-1">
+
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+
+                    <div class="d-flex gap-2 mt-4">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+
+                            {% if modo_edicao %}
+                                Salvar alterações
+                            {% else %}
+                                Criar movimentação
+                            {% endif %}
+
+                        </button>
+
+
+                        <a
+                            href="{% url 'lista_movimentacoes' %}"
+                            class="btn btn-outline-secondary"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

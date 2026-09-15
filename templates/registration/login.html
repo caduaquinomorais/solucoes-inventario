@@ -1,65 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
 
-    <title>Login</title>
+{% block title %}
+    Login
+{% endblock %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 80px auto;
-            padding: 20px;
-        }
 
-        h1 {
-            margin-bottom: 30px;
-        }
+{% block content %}
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+<div class="row justify-content-center">
 
-        input {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-        }
+    <div class="col-md-5 col-lg-4">
 
-        button {
-            padding: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        <div class="text-center mb-4">
 
-        .erro {
-            color: #b00020;
-            margin-bottom: 15px;
-        }
-    </style>
-</head>
+            <h1 class="fw-bold">
+                Movimentações
+            </h1>
 
-<body>
+            <p class="text-muted">
+                Acesse sua conta
+            </p>
 
-    <h1>Login</h1>
-
-    {% if form.errors %}
-        <div class="erro">
-            Usuário ou senha incorretos.
         </div>
-    {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
 
-        {{ form.as_p }}
+        <div class="card">
 
-        <button type="submit">Entrar</button>
-    </form>
+            <div class="card-body p-4">
 
-</body>
-</html>
+                <form method="post">
+
+                    {% csrf_token %}
+
+
+                    {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ form.username.id_for_label }}"
+                            class="form-label"
+                        >
+                            Usuário
+                        </label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            id="{{ form.username.id_for_label }}"
+                            class="form-control"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ form.password.id_for_label }}"
+                            class="form-label"
+                        >
+                            Senha
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="{{ form.password.id_for_label }}"
+                            class="form-control"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        Entrar
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

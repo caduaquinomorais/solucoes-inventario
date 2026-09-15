@@ -1,132 +1,356 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da movimentação</title>
-</head>
-<body>
-    <div>
-        <span>Usuário: {{ request.user.username }}</span>
+{% extends 'base.html' %}
 
-        <form method="post" action="{% url 'logout' %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit">Sair</button>
-        </form>
+{% block title %}
+    Detalhes da movimentação
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1 class="page-title mb-1">
+            Detalhes da movimentação
+        </h1>
+
+        <p class="text-muted mb-0">
+            Registro #{{ movimentacao.id }}
+        </p>
     </div>
 
-    <h1>Detalhes da movimentação</h1>
+    <a
+        href="{% url 'lista_movimentacoes' %}"
+        class="btn btn-outline-secondary"
+    >
+        Voltar
+    </a>
 
-    <p>
-        <strong>Equipamento:</strong>
-        {{ movimentacao.get_equipamento_display }}
-    </p>
+</div>
 
-    <p>
-        <strong>Código:</strong>
-        {{ movimentacao.codigo }}
-    </p>
 
-    <p>
-        <strong>Origem:</strong>
-        {{ movimentacao.origem }}
-    </p>
+<div class="row g-4">
 
-    <p>
-        <strong>Destino:</strong>
-        {{ movimentacao.destino }}
-    </p>
+    <!-- Informações -->
+    <div class="col-lg-8">
 
-    <p>
-        <strong>Uso:</strong>
-        {{ movimentacao.uso|default:"Não informado" }}
-    </p>
+        <div class="card">
 
-    <p>
-        <strong>Observação:</strong>
-        {{ movimentacao.observacao|default:"Não informado" }}
-    </p>
+            <div class="card-header py-3">
+                Informações do equipamento
+            </div>
 
-    <p>
-        <strong>Criado por:</strong>
-        {{ movimentacao.usuario }}
-    </p>
+            <div class="card-body">
 
-    <p>
-        <strong>Data de criação:</strong>
-        {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
-    </p>
+                <div class="row">
 
-    <p>
-        <strong>Status:</strong>
-        {{ movimentacao.get_status_display }}
-    </p>
+                    <div class="col-md-6">
 
-    {% if movimentacao.foto %}
-        <p>
-            <strong>Foto:</strong>
-        </p>
+                        <div class="detail-label">
+                            Equipamento
+                        </div>
 
-        <img
-            src="{{ movimentacao.foto.url }}"
-            alt="Foto do equipamento"
-            style="max-width: 400px;"
+                        <div class="detail-value">
+                            {{ movimentacao.get_equipamento_display }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Código
+                        </div>
+
+                        <div class="detail-value">
+                            {{ movimentacao.codigo }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Origem
+                        </div>
+
+                        <div class="detail-value">
+                            {{ movimentacao.origem }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Destino
+                        </div>
+
+                        <div class="detail-value">
+                            {{ movimentacao.destino }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Uso
+                        </div>
+
+                        <div class="detail-value">
+
+                            {% if movimentacao.uso %}
+                                {{ movimentacao.uso }}
+                            {% else %}
+                                <span class="text-muted">
+                                    Não informado
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Usuário
+                        </div>
+
+                        <div class="detail-value">
+                            {{ movimentacao.usuario.username }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Data de criação
+                        </div>
+
+                        <div class="detail-value">
+                            {{ movimentacao.data_criacao|date:"d/m/Y H:i" }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="detail-label">
+                            Status
+                        </div>
+
+                        <div class="detail-value">
+
+                            {% if movimentacao.status == 'pendente' %}
+
+                                <span class="badge text-bg-warning status-badge">
+                                    Pendente
+                                </span>
+
+                            {% elif movimentacao.status == 'processado' %}
+
+                                <span class="badge text-bg-success status-badge">
+                                    Processado
+                                </span>
+
+                            {% elif movimentacao.status == 'descartado' %}
+
+                                <span class="badge text-bg-danger status-badge">
+                                    Descartado
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <hr>
+
+
+                <div class="detail-label">
+                    Observação
+                </div>
+
+                <div class="detail-value">
+
+                    {% if movimentacao.observacao %}
+                        {{ movimentacao.observacao }}
+                    {% else %}
+                        <span class="text-muted">
+                            Nenhuma observação.
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Foto -->
+    <div class="col-lg-4">
+
+        <div class="card">
+
+            <div class="card-header py-3">
+                Foto
+            </div>
+
+            <div class="card-body text-center">
+
+                {% if movimentacao.foto %}
+
+                    <img
+                        src="{{ movimentacao.foto.url }}"
+                        alt="Foto do equipamento"
+                        class="movement-photo"
+                    >
+
+                {% else %}
+
+                    <p class="text-muted mb-0">
+                        Nenhuma foto cadastrada.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% if administrador %}
+
+<div class="card mt-4">
+
+    <div class="card-header py-3">
+        Administração
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <a
+                href="{% url 'editar_movimentacao' id=movimentacao.id %}"
+                class="btn btn-primary"
+            >
+                Editar
+            </a>
+
+
+            <form
+                method="post"
+                action="{% url 'excluir_movimentacao' id=movimentacao.id %}"
+                onsubmit="return confirm('Tem certeza que deseja excluir esta movimentação?');"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn btn-outline-danger"
+                >
+                    Excluir
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <hr>
+
+
+        <form
+            method="post"
+            action="{% url 'alterar_status' id=movimentacao.id %}"
         >
-    {% endif %}
 
-    {% if administrador %}
-        <a href="{% url 'editar_movimentacao' id=movimentacao.id %}">
-            Editar
-        </a>
-    {% endif %}
-
-    {% if administrador %}
-        <a href="{% url 'editar_movimentacao' id=movimentacao.id %}">
-            Editar
-        </a>
-
-        <form method="post" action="{% url 'excluir_movimentacao' id=movimentacao.id %}">
-            {% csrf_token %}
-            <button type="submit">
-             Excluir
-            </button>
-        </form>
-
-        <form method="post" action="{% url 'alterar_status' id=movimentacao.id %}">
             {% csrf_token %}
 
-            <label for="status">Status:</label>
+            <div class="row align-items-end">
 
-            <select name="status" id="status">
-                <option value="pendente"
-                    {% if movimentacao.status == 'pendente' %}selected{% endif %}>
-                    Pendente
-                </option>
+                <div class="col-md-6">
 
-                <option value="processado"
-                    {% if movimentacao.status == 'processado' %}selected{% endif %}>
-                    Processado
-                </option>
+                    <label
+                        for="status"
+                        class="form-label"
+                    >
+                        Alterar status
+                    </label>
 
-                <option value="descartado"
-                    {% if movimentacao.status == 'descartado' %}selected{% endif %}>
-                    Descartado
-                </option>
-            </select>
+                    <select
+                        name="status"
+                        id="status"
+                        class="form-select"
+                    >
 
-            <button type="submit">
-                Alterar status
-            </button>
+                        <option
+                            value="pendente"
+                            {% if movimentacao.status == 'pendente' %}selected{% endif %}
+                        >
+                            Pendente
+                        </option>
+
+                        <option
+                            value="processado"
+                            {% if movimentacao.status == 'processado' %}selected{% endif %}
+                        >
+                            Processado
+                        </option>
+
+                        <option
+                            value="descartado"
+                            {% if movimentacao.status == 'descartado' %}selected{% endif %}
+                        >
+                            Descartado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-auto mt-3 mt-md-0">
+
+                    <button
+                        type="submit"
+                        class="btn btn-dark"
+                    >
+                        Alterar status
+                    </button>
+
+                </div>
+
+            </div>
+
         </form>
 
-        
-    {% endif %}
+    </div>
 
-    <p>
-        <a href="{% url 'lista_movimentacoes' %}">
-            Voltar para movimentações
-        </a>
-    </p>
+</div>
 
-</body>
-</html>
+{% endif %}
+
+{% endblock %}
