@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404,redirect,render
 from .models import Movimentacao
 from .forms import MovimentacaoForm
 from .decorators import administrador_required
+from django.views.decorators.http import require_POST
 
 @login_required
 def lista_movimentacoes(request):
@@ -88,3 +89,16 @@ def editar_movimentacao(request, id):
             'modo_edicao': True
         }
     )
+
+@login_required
+@administrador_required
+@require_POST
+def excluir_movimentacao(request, id):
+    movimentacao = get_object_or_404(
+        Movimentacao,
+        id=id
+    )
+
+    movimentacao.delete()
+
+    return redirect('lista_movimentacoes')

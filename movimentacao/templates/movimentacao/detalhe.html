@@ -80,6 +80,19 @@
         </a>
     {% endif %}
 
+    {% if administrador %}
+        <a href="{% url 'editar_movimentacao' id=movimentacao.id %}">
+            Editar
+        </a>
+
+        <form method="post" action="{% url 'excluir_movimentacao' id=movimentacao.id %}">
+            {% csrf_token %}
+            <button type="submit">
+             Excluir
+            </button>
+        </form>
+    {% endif %}
+
     <p>
         <a href="{% url 'lista_movimentacoes' %}">
             Voltar para movimentações

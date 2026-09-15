@@ -6,4 +6,5 @@ urlpatterns = [
     path('nova/', views.criar_movimentacao, name= 'criar_movimentacao'),
     path('<int:id>', views.detalhe_movimentacao, name='detalhe_movimentacao'),
     path('<int:id>/editar/', views.editar_movimentacao, name='editar_movimentacao'),
+    path('<int:id>/exluir/', views.excluir_movimentacao, name='excluir_movimentacao')
 ]
