@@ -91,6 +91,35 @@
              Excluir
             </button>
         </form>
+
+        <form method="post" action="{% url 'alterar_status' id=movimentacao.id %}">
+            {% csrf_token %}
+
+            <label for="status">Status:</label>
+
+            <select name="status" id="status">
+                <option value="pendente"
+                    {% if movimentacao.status == 'pendente' %}selected{% endif %}>
+                    Pendente
+                </option>
+
+                <option value="processado"
+                    {% if movimentacao.status == 'processado' %}selected{% endif %}>
+                    Processado
+                </option>
+
+                <option value="descartado"
+                    {% if movimentacao.status == 'descartado' %}selected{% endif %}>
+                    Descartado
+                </option>
+            </select>
+
+            <button type="submit">
+                Alterar status
+            </button>
+        </form>
+
+        
     {% endif %}
 
     <p>
