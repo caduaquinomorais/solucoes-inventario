@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     # Aplicações do projeto
     'movimentacao',
+    'inventario',
 ]
 
 

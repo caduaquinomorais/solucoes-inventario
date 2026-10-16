@@ -6,6 +6,9 @@ from .decorators import administrador_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 
+def home(request):
+    return render(request, 'home.html')
+
 @login_required
 def lista_movimentacoes(request):
     movimentacoes = Movimentacao.objects.all().order_by('-data_criacao')
